@@ -168,8 +168,13 @@ void D3DDetector::Construct(G4VPhysicalVolume *parentWorld) {
   auto geo_type = D3DDetector::SetGeometrySource();
 
   if(geo_type.compare("StlDetectorWithPositioningFromCsv")==0){
-    std::string path = PROJECT_DATA_PATH;
-    path = path + "/" + m_config.m_stl_geometry_file_path;
+
+    std::string path = m_config.m_stl_geometry_file_path;
+    if(!fs::exists(fs::path(path))){
+      std::string data_path = PROJECT_DATA_PATH;
+      auto path = data_path+"/"+path;
+    }
+
     auto mesh = CADMesh::TessellatedMesh::FromSTL(path);
     G4VSolid* solid = mesh->GetSolid();
     auto Medium = ConfigSvc::GetInstance()->GetValue<G4MaterialSPtr>("MaterialsSvc", "PMMA");
