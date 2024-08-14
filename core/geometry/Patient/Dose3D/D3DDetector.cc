@@ -15,6 +15,9 @@
 #include <array>
 #include "IO.hh"
 #include "VPatientSD.hh"
+#include <filesystem>
+
+namespace fs = std::filesystem;
 
 
 std::map<std::string, std::map<std::size_t, VoxelHit>> D3DDetector::m_hashed_scoring_map_template = std::map<std::string, std::map<std::size_t, VoxelHit>>();
@@ -172,7 +175,7 @@ void D3DDetector::Construct(G4VPhysicalVolume *parentWorld) {
     std::string path = m_config.m_stl_geometry_file_path;
     if(!fs::exists(fs::path(path))){
       std::string data_path = PROJECT_DATA_PATH;
-      auto path = data_path+"/"+path;
+      path = data_path+"/"+path;
     }
 
     auto mesh = CADMesh::TessellatedMesh::FromSTL(path);
