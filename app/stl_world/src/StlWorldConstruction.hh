@@ -2,7 +2,7 @@
 #define TB_StlWorldConstruction_HH
 
 #include "WorldConstruction.hh"
-#include "D3DTray.hh"
+#include "Element.hh"
 
 
 
@@ -12,7 +12,7 @@ public:
 
 bool Create() override;
 
-void ConstructTrayDetectors(G4VPhysicalVolume *parentPV);
+void ConstructAssembledModel(G4VPhysicalVolume *parentPV);
 
 void ConstructSDandField() override;
 
@@ -32,7 +32,7 @@ private:
     StlWorldConstruction &operator=(StlWorldConstruction &&) = delete;
 
     ///
-    std::vector<D3DTray*> m_trays;
+    std::vector<Element*> m_trays;
 
     ///
     G4VPhysicalVolume* m_bunker_wall = nullptr;

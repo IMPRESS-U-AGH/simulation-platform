@@ -8,7 +8,7 @@
 
 ///\class PatientGeometry
 ///\brief The liniac Phantom volume construction.
-class D3DTray : public IPhysicalVolume, public TomlConfigModule {
+class Element : public IPhysicalVolume, public TomlConfigModule {
     private:
         ///
         void ParseTomlConfig() override;
@@ -16,15 +16,12 @@ class D3DTray : public IPhysicalVolume, public TomlConfigModule {
         ///
         void LoadConfiguration();
 
-        ///
-        D3DDetector::Config m_det_config;
-
     public:
     ///
-    D3DTray(G4VPhysicalVolume *parentPV, const std::string& name);
+    Element(G4VPhysicalVolume *parentPV, const std::string& name);
 
     ///
-    ~D3DTray() {};
+    ~Element() {};
 
     ///
     void Construct(G4VPhysicalVolume *parentPV) override;

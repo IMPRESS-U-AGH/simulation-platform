@@ -1,11 +1,11 @@
 
-#include "D3DTray.hh"
+#include "Element.hh"
 #include "Services.hh"
 #include "G4Box.hh"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-D3DTray::D3DTray(G4VPhysicalVolume *parentPV, const std::string& name)
+Element::Element(G4VPhysicalVolume *parentPV, const std::string& name)
 :IPhysicalVolume(name), TomlConfigModule(name), m_tray_name(name) {
     m_detector = new D3DDetector(m_tray_name);
     LoadConfiguration();
@@ -14,7 +14,7 @@ D3DTray::D3DTray(G4VPhysicalVolume *parentPV, const std::string& name)
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-void D3DTray::Construct(G4VPhysicalVolume *parentPV) {
+void Element::Construct(G4VPhysicalVolume *parentPV) {
     auto medium = Service<ConfigSvc>()->GetValue<G4MaterialSPtr>("MaterialsSvc", "Usr_G4AIR20C");
     
     auto boxName = m_tray_name + "EnvBox";
@@ -33,13 +33,13 @@ void D3DTray::Construct(G4VPhysicalVolume *parentPV) {
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-void D3DTray::DefineSensitiveDetector() {
+void Element::DefineSensitiveDetector() {
     m_detector->DefineSensitiveDetector();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-void D3DTray::LoadConfiguration(){
+void Element::LoadConfiguration(){
 
     // Deafult configuration
     m_rot = G4RotationMatrix(); //.rotateY(180.*deg);
@@ -71,16 +71,16 @@ void D3DTray::LoadConfiguration(){
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-void D3DTray::ParseTomlConfig(){
+void Element::ParseTomlConfig(){
     SetTomlConfigFile(); // it set the job main file for searching this configuration
     auto configFile = GetTomlConfigFile();
     if (!svc::checkIfFileExist(configFile)) {
-        LOGSVC_CRITICAL("D3DTray::TConfigurarable::ParseTomlConfig::File {} not fount.", configFile);
+        LOGSVC_CRITICAL("Element::TConfigurarable::ParseTomlConfig::File {} not fount.", configFile);
         exit(1);
     }
     auto config = toml::parse_file(configFile);
     auto configPrefix = GetTomlConfigPrefix();
-    LOGSVC_INFO("D3DTray::Importing configuration from: {}:{}",configFile,configPrefix);
+    LOGSVC_INFO("Element::Importing configuration from: {}:{}",configFile,configPrefix);
 
     m_global_centre.setX(config[configPrefix]["Position"][0].value_or(0.0));
     m_global_centre.setY(config[configPrefix]["Position"][1].value_or(0.0));
