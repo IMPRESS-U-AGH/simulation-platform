@@ -1,7 +1,7 @@
 [RunSvc]
-JobName = "Multiple tray run test"
-BeamType = "IAEA"
-# PhspInputFileName = "/mnt/c/Users/Jakub/Desktop/phsp/Cliniac2100s2-f0_v1"
+JobName = "STL test"
+BeamType = "gps"
+GpsMacFileName = "/home/geant4/impress-u-agh/simulation-platform/scripts/gps/gps_mono_gammas_pre.mac"
 PhspEvtVrtxMultiplicityTreshold = 32
 PrintProgressFrequency = 0.005
 GenerateCT = false
@@ -15,20 +15,20 @@ BuildPatient = true
 
 [PatientGeometry]
 Type = "D3DDetector"
-EnviromentPositionX = 940.0
+EnviromentPositionX = 0.0
 EnviromentPositionY = 0.0
-EnviromentPositionZ = 40.0
-EnviromentSizeX = 2400.0
-EnviromentSizeY = 550.0
-EnviromentSizeZ = 28.0
+EnviromentPositionZ = 0.0
+EnviromentSizeX = 2000.0
+EnviromentSizeY = 2000.0
+EnviromentSizeZ = 2000.0
 EnviromentMedium = "G4_WATER"
 
 [D3DDetector_Detector]
-TopPositionInEnv = [-1090.0,0.0,10.0] # In mm
-Geomertry = "dose3d/geo/Tray/multiple_tray_10x1x1.stl"
+TopPositionInEnv = [-50.0,0.0,0.0] # In mm
+Geomertry = "gear001.stl"
 
 [D3DDetector_Layer]
-Positioning = "dose3d/geo/Tray/multiple_tray_10x1x1.csv"
+Positioning = "dose3d/geo/Tray/single_tray.csv"
 
 
 [D3DDetector_Cell]
@@ -37,6 +37,6 @@ Voxelization = [2,2,2]
 
 [RunSvc_Plan] 
 PlanInputFile = [
-    "plan/custom/rot00_open.dat"
+    "plan/custom/rot00deg_0.1x320.dat"
 ]
 
