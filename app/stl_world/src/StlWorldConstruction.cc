@@ -30,11 +30,19 @@ bool StlWorldConstruction::Create() {
 }
 
 void StlWorldConstruction::ConstructAssembledModel(G4VPhysicalVolume *parentPV) {
-  auto config = toml::parse_file(configFile);
 
-  if (config[configObj].as_table()->find("PlanInputFile")!= config[configObj].as_table()->end()){
-    // Each file is assumed to define single Control Point!
-    auto numberOfCP = config[configObj]["PlanInputFile"].as_array()->size();
+
+    auto config = toml::parse_file(configFile);
+
+
+    if (config[configObj].as_table()->find("Element")!= config[configObj].as_table()->end()){
+        auto numberOfElements = config[configObj]["Element"].as_array()->size();
+        for( int i = 0; i < numberOfElements; i++ ){
+            auto name = config[configObj]["Element"][i][0];
+            auto path = config[configObj]["Element"][i][1];
+            auto material = config[configObj]["Element"][i][2];
+            m_elements.push_back(new Element(parentPV, name, path, material));
+            }
 }
 }
 void StlWorldConstruction::ConstructSDandField() {

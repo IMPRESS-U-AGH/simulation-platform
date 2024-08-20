@@ -37,7 +37,8 @@ add_definitions(${Core_DEFINITIONS}
         ${ROOT_DEFINITIONS})
 
 set(HEADERS_DIR ${PROJECT_SOURCE_DIR}/basic
-                ${PROJECT_SOURCE_DIR}/bworld/src)
+                ${PROJECT_SOURCE_DIR}/bworld/src
+                ${PROJECT_SOURCE_DIR}/stl_world/src)
 
 include_directories(${IAEA_INCLUDE_DIR}
         ${Cmd_INCLUDE_DIR}
@@ -59,6 +60,11 @@ target_link_libraries(g4rt IAEA ConfigSvc Core spdlog::spdlog ${Geant4_LIBRARIES
 file(GLOB_RECURSE SOURCES_BWORLD ${PROJECT_SOURCE_DIR}/bworld/*.cc)
 add_executable(g4rt_bworld ${SOURCES_BWORLD} bworld/main.cc)
 target_link_libraries(g4rt_bworld IAEA ConfigSvc Core spdlog::spdlog ${Geant4_LIBRARIES})
+
+#---------------------------------------------------------------------------
+file(GLOB_RECURSE SOURCES_STLWORLD ${PROJECT_SOURCE_DIR}/stl_world/*.cc)
+add_executable(stl_app ${SOURCES_STLWORLD} stl_world/main.cc)
+target_link_libraries(stl_app IAEA ConfigSvc Core spdlog::spdlog ${Geant4_LIBRARIES})
 
 #---------------------------------------------------------------------------
 file(GLOB_RECURSE SOURCES_DCM2DAT ${PROJECT_SOURCE_DIR}/rtplan_converter/*.cc)

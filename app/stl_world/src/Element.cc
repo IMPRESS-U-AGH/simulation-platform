@@ -5,9 +5,9 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-Element::Element(G4VPhysicalVolume *parentPV, const std::string& name)
-:IPhysicalVolume(name), TomlConfigModule(name), m_tray_name(name) {
-    m_detector = new D3DDetector(m_tray_name);
+Element::Element(G4VPhysicalVolume *parentPV, const std::string& name, const std::string& path, const std::string& material )
+:IPhysicalVolume(name), TomlConfigModule(name), m_element_name(name), m_element_path(path), m_element_metrial(material) {
+
     LoadConfiguration();
     Construct(parentPV);
 } 
@@ -43,24 +43,20 @@ void Element::LoadConfiguration(){
 
     // Deafult configuration
     m_rot = G4RotationMatrix(); //.rotateY(180.*deg);
-    m_tray_world_halfSize = G4ThreeVector(102.,111.,9.2);
+    // m_tray_world_halfSize = G4ThreeVector(102.,111.,9.2);
     
     m_global_centre = G4ThreeVector(0.0,0.0,0.0);
 
     m_det_config.m_top_position_in_env = G4ThreeVector(0.0,0.0,0.0);
 
-    m_det_config.m_cell_nX_voxels = 4;
-    m_det_config.m_cell_nY_voxels = 4;
-    m_det_config.m_cell_nZ_voxels = 4;
 
     m_det_config.m_mrow_shift = false;
     m_det_config.m_mlayer_shift = false;
 
-    m_det_config.m_cell_medium = "RMPS470";
-    m_det_config.m_in_layer_positioning_module = "dose3d/geo/Tray/4x5x1_tray.csv";
-    m_det_config.m_stl_geometry_file_path = "dose3d/geo/Tray/tray.stl";
+    // m_det_config.m_cell_medium = "RMPS470";
+    // m_det_config.m_stl_geometry_file_path = "example_element.stl";
 
-    m_det_config.m_top_position_in_env = G4ThreeVector(-85.,0.0,-7.0); // "centre" of the trey is not in the geometrical centre
+    m_det_config.m_top_position_in_env = G4ThreeVector(0.,0.0,0.0); // "centre" of the trey is not in the geometrical centre
 
     // Any config value is being replaced by the one existing in TOML config 
     ParseTomlConfig();

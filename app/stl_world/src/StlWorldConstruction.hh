@@ -32,7 +32,7 @@ private:
     StlWorldConstruction &operator=(StlWorldConstruction &&) = delete;
 
     ///
-    std::vector<Element*> m_trays;
+    std::vector<Element*> m_elements;
 
     ///
     G4VPhysicalVolume* m_bunker_wall = nullptr;

@@ -20,8 +20,8 @@ BuildPatient = false
 
 [Element]
 StlElementsList = [
-    ["path", "material"],
-    ["Path2", "material2"]
+    ["Element1","/home/jackie/work/impress_U/simulation-platform/data/ExampleStl/Shell.stl", "RMPS470"],
+    ["Element2","/home/jackie/work/impress_U/simulation-platform/data/ExampleStl/Spur.stl", "RMPS470"]
 ]
 
 [RunSvc_Plan] 
