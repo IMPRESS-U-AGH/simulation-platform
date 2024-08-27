@@ -41,9 +41,9 @@ void StlWorldConstruction::ConstructAssembledModel(G4VPhysicalVolume *parentPV) 
             auto name = config["Parts"]["elements"][i][0].value_or(std::string());
             auto path = config["Parts"]["elements"][i][4].value_or(std::string());
             auto material = config["Parts"]["elements"][i][3].value_or(std::string());
-            double centreX = config["Parts"]["elements"][i][1][0].value_or(0.0);
-            double centreY = config["Parts"]["elements"][i][1][1].value_or(0.0);
-            double centreZ = config["Parts"]["elements"][i][1][2].value_or(0.0);
+            auto centreX = config["Parts"]["elements"][i][1][0].value_or(0.0);
+            auto centreY = config["Parts"]["elements"][i][1][1].value_or(0.0);
+            auto centreZ = config["Parts"]["elements"][i][1][2].value_or(0.0);
             G4ThreeVector centre =  G4ThreeVector(centreX,centreY,centreZ);
             m_elements.push_back(new Element(parentPV, name, path, material, centre, i));
             }

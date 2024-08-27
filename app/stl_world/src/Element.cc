@@ -35,8 +35,9 @@ void Element::Construct(G4VPhysicalVolume *parentPV) {
     auto nameLV = name + "LV";
     auto namePV = name + "PV";
 
+    std::cout << "Element: " << name << " path: " << path << std::endl;
+
     auto mesh = CADMesh::TessellatedMesh::FromSTL(path);
-    
     G4VSolid* solid = mesh->GetSolid();
     
     auto Medium = ConfigSvc::GetInstance()->GetValue<G4MaterialSPtr>("MaterialsSvc", m_element_material);
