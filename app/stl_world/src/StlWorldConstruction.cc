@@ -30,32 +30,22 @@ bool StlWorldConstruction::Create() {
 }
 
 void StlWorldConstruction::ConstructAssembledModel(G4VPhysicalVolume *parentPV) {
-
-
+    auto configSvc = Service<ConfigSvc>(); 
+    auto configFile = configSvc->GetTomlFile();
     auto config = toml::parse_file(configFile);
 
 
-    if (config[configObj].as_table()->find("Element")!= config[configObj].as_table()->end()){
-        auto numberOfElements = config[configObj]["Element"].as_array()->size();
+    if (config["Parts"].as_table()->find("elements")!= config["Parts"].as_table()->end()){
+        auto numberOfElements = config["Parts"]["elements"].as_array()->size();
         for( int i = 0; i < numberOfElements; i++ ){
-            auto name = config[configObj]["Element"][i][0];
-            auto path = config[configObj]["Element"][i][1];
-            auto material = config[configObj]["Element"][i][2];
-            m_elements.push_back(new Element(parentPV, name, path, material));
+            auto name = config["Parts"]["elements"][i][0].value_or(std::string());
+            auto path = config["Parts"]["elements"][i][4].value_or(std::string());
+            auto material = config["Parts"]["elements"][i][3].value_or(std::string());
+            double centreX = config["Parts"]["elements"][i][1][0].value_or(0.0);
+            double centreY = config["Parts"]["elements"][i][1][1].value_or(0.0);
+            double centreZ = config["Parts"]["elements"][i][1][2].value_or(0.0);
+            G4ThreeVector centre =  G4ThreeVector(centreX,centreY,centreZ);
+            m_elements.push_back(new Element(parentPV, name, path, material, centre, i));
             }
 }
-}
-void StlWorldConstruction::ConstructSDandField() {
-    WorldConstruction::ConstructSDandField();
-    for(auto& tray : m_trays){
-    tray->DefineSensitiveDetector();
-    }
-}
-
-std::vector<VPatient*> StlWorldConstruction::GetCustomDetectors() const {
-    std::vector<VPatient*> customDetectors;
-    for(const auto& tray : m_trays){
-        customDetectors.push_back(tray->GetDetector());
-    }
-    return std::move(customDetectors);
 }

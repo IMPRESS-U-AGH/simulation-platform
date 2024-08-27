@@ -1,61 +1,79 @@
-
 #include "Element.hh"
+#include "G4SystemOfUnits.hh"
+#include "GeoSvc.hh"
+#include "G4ProductionCuts.hh"
+#include "ConfigSvc.hh"
+#include "ElementSD.hh"
+#include "G4UserLimits.hh"
+#include "NTupleEventAnalisys.hh"
+#include "RunAnalysis.hh"
+#include "colors.hh"
+#include <vector>
 #include "Services.hh"
+#include "CADMesh.hh"
+
+namespace {
+    G4Mutex ElementMutex = G4MUTEX_INITIALIZER;
+}
 
 
-////////////////////////////////////////////////////////////////////////////////
-///
-Element::Element(G4VPhysicalVolume *parentPV, const std::string& name, const std::string& path, const std::string& material )
-:IPhysicalVolume(name), TomlConfigModule(name), m_element_name(name), m_element_path(path), m_element_material(material) {
-
-    LoadConfiguration();
+Element::Element(G4VPhysicalVolume *parentPV, const std::string& name, const std::string& path, 
+const std::string& material, const G4ThreeVector& centre, const int& elementID)
+: VPatient(name),  m_element_name(name), m_element_path(path), m_element_material(material), m_elementID(elementID) {
+    m_centre = centre;
     Construct(parentPV);
 } 
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
 void Element::Construct(G4VPhysicalVolume *parentPV) {
 
-  ParseTomlConfig() ;
-}
+    std::string path = m_element_path;
+    std::string name = GetName();
+    auto nameLV = name + "LV";
+    auto namePV = name + "PV";
 
-////////////////////////////////////////////////////////////////////////////////
-///
-void Element::DefineSensitiveDetector() {
-
-}
-
-////////////////////////////////////////////////////////////////////////////////
-///
-void Element::LoadConfiguration(){
-
-    // Deafult configuration
-    m_rot = G4RotationMatrix(); //.rotateY(180.*deg);
+    auto mesh = CADMesh::TessellatedMesh::FromSTL(path);
     
-    m_global_centre = G4ThreeVector(0.0,0.0,0.0);
+    G4VSolid* solid = mesh->GetSolid();
+    
+    auto Medium = ConfigSvc::GetInstance()->GetValue<G4MaterialSPtr>("MaterialsSvc", m_element_material);
+    auto elementLV = new G4LogicalVolume(solid, Medium.get(), nameLV);
 
-    // Any config value is being replaced by the one existing in TOML config 
-    ParseTomlConfig();
+    SetPhysicalVolume(new G4PVPlacement(nullptr, m_centre, namePV, elementLV, parentPV, false, 0));
+
+    auto regVol = new G4Region(name+"_G4RegionCuts");
+    auto cuts = new G4ProductionCuts;
+    cuts->SetProductionCut(0.1 * mm);
+    regVol->SetProductionCuts(cuts);
+    elementLV->SetRegion(regVol);
+    regVol->AddRootLogicalVolume(elementLV);
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
-void Element::ParseTomlConfig(){
-    SetTomlConfigFile(); // it set the job main file for searching this configuration
-    auto configFile = GetTomlConfigFile();
-    if (!svc::checkIfFileExist(configFile)) {
-        LOGSVC_CRITICAL("Element::TConfigurarable::ParseTomlConfig::File {} not fount.", configFile);
-        exit(1);
-    }
-    auto config = toml::parse_file(configFile);
-    auto configPrefix = GetTomlConfigPrefix();
-    LOGSVC_INFO("Element::Importing configuration from: {}:{}",configFile,configPrefix);
+void Element::DefineSensitiveDetector(){
+  G4AutoLock lock(&ElementMutex);
+  if(m_patientSD.Get()==0){
+    auto pv = GetPhysicalVolume();
+    auto centre = m_centre;
 
-    m_global_centre.setX(config[configPrefix]["Position"][0].value_or(0.0));
-    m_global_centre.setY(config[configPrefix]["Position"][1].value_or(0.0));
-    m_global_centre.setZ(config[configPrefix]["Position"][2].value_or(0.0));
+    auto envBox = dynamic_cast<G4VSolid*>(pv->GetLogicalVolume()->GetSolid());
+    auto label = GetName();
+    m_patientSD.Put(new ElementSD(label+"_SD",centre,m_elementID));
+    auto patientSD = m_patientSD.Get();
+    patientSD->SetTracksAnalysis(m_tracks_analysis);
 
+    G4String hcName;
+    hcName = label+"_HC";
 
+    std::string name = GetName();
+    std::string runCollName = name.substr(0, name.find('_', 0));
+    // patientSD->AddScoringVolume(runCollName,hcName,*envBox,m_elementID,m_elementID,m_elementID);
+    // VPatient::SetSensitiveDetector(label+"LV", patientSD); 
+
+  }
 }
-

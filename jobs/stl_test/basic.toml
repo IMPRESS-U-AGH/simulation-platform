@@ -15,14 +15,23 @@ NTupleAnalysis = true
 RunAnalysis = true
 
 [GeoSvc]
-BuildLinac = true
+BuildLinac = false
 BuildPatient = false
 
-[Element]
-StlElementsList = [
-    ["Element1","/home/jackie/work/impress_U/simulation-platform/data/ExampleStl/Shell.stl", "RMPS470"],
-    ["Element2","/home/jackie/work/impress_U/simulation-platform/data/ExampleStl/Spur.stl", "RMPS470"]
+[Parts]
+#[Name, Position, Rotation, Material, STL_File]
+elements = [
+["gear001", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/gear001.stl"],
+["Spur001", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur001.stl"],
+["_1", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/_1.stl"],
+["Spur002", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur002.stl"],
+["_2", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/_2.stl"],
+["Spur003", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur003.stl"],
+["Spur004", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur004.stl"],
+["Shell", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Shell.stl"],
+["gearL", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/gearL.stl"]
 ]
+
 
 [RunSvc_Plan] 
 PlanInputFile = [

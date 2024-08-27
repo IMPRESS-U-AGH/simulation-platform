@@ -14,10 +14,6 @@ bool Create() override;
 
 void ConstructAssembledModel(G4VPhysicalVolume *parentPV);
 
-void ConstructSDandField() override;
-
-std::vector<VPatient*> GetCustomDetectors() const override;
-
 private:
     ///
     StlWorldConstruction();

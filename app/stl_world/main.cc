@@ -16,7 +16,7 @@
 #include "toml.hh"
 #include "colors.hh"
 #include "LogSvc.hh"
-#include "BWorldConstruction.hh"
+#include "StlWorldConstruction.hh"
 
 int main(int argc, const char *argv[]) {
 
@@ -127,7 +127,7 @@ int main(int argc, const char *argv[]) {
       std::cout << "Error parsing options: " << e.what() << std::endl;
       std::exit(EXIT_FAILURE);
     } 
-    runSvc->Initialize(BWorldConstruction::GetInstance());
+    runSvc->Initialize(StlWorldConstruction::GetInstance());
     runSvc->Run();
     runSvc->Finalize();
   } else {
