@@ -16,9 +16,15 @@ BuildPatient = false
 [Parts]
 #[Name, Position, Rotation, Material, STL_File]
 elements = [
-["Spur001", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/wsl/Alma/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur001.stl"],
-["Spur002", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/wsl/Alma/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur002.stl"],
-["Spur003", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/wsl/Alma/home/jackie/work/impress_U/geometryWrapper/utils/../output/stl/Spur003.stl"]
+["PlaceholderName1", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName2", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName3", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName4", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName5", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName6", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName7", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName8", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"],
+["PlaceholderName9", [0.0, 0.0, 0.0], [0.0, 0.0, 0.0], "G4_WATER", "/mnt/c/Users/Jakub/Desktop/gear_detector.obj"]
 ]
 
 

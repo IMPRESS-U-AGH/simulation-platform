@@ -24,6 +24,7 @@ UIManager *UIManager::GetInstance() {
 void UIManager::ReadMacros(const std::vector<G4String> &m_MacFiles) {
   ProcessingFlag BeamOnFlag;
   for (auto macFile : m_MacFiles) {
+    std::cout << "ReadMacros: " << macFile << std::endl;
     if ( G4StrUtil::contains(macFile,"_pre"))
       BeamOnFlag = preBeamOn;
     else if (G4StrUtil::contains( macFile, "_post"))

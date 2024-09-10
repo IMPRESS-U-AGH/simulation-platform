@@ -23,6 +23,8 @@
 #include "TGeoVolume.h"
 #include "TFile.h"
 #include "TTree.h"
+#include <iostream>
+#include "G4VisExecutive.hh"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///
@@ -259,11 +261,14 @@ void RunSvc::Initialize(WorldConstruction* world) {
 
     // Add simple scoring
     // if(thisConfig()->GetValue<G4String>("patientName")=="WaterPhantom"){
-    //   m_macFiles.push_back("./scoring_pre.mac");   // List of commands being applied before beamOn execution
+      // m_macFiles.push_back("./scoring_pre.mac");   // List of commands being applied before beamOn execution
     //   m_macFiles.push_back("./scoring_post.mac");  // List of commands being applied after beamOn execution
     // }
     // TODO : when the modes of operation will be defined:
-    // m_macFiles.push_back("./vis.mac");           // List of commands being applied before beamOn execution
+    // G4VisManager* visManager = new G4VisExecutive;
+    // visManager->Initialize();
+
+    m_macFiles.push_back("./vis.mac");           // List of commands being applied before beamOn execution
     auto numberOfThreads = m_configSvc->GetValue<int>("RunSvc", "NumberOfThreads");
     auto physics = m_configSvc->GetValue<std::string>("RunSvc", "Physics");
     auto numberOfControlPoints = m_control_points.size();
