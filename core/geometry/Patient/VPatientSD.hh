@@ -63,7 +63,6 @@ class VPatientSD : public G4VSensitiveDetector, public Logable {
 
           ///
           G4double GetVolume() const { return GetSizeX()*GetSizeY()*GetSizeZ(); }
-          // G4double GetVoxelVolume() const { return (GetSizeX()/m_nVoxelsX)*(GetSizeY()/m_nVoxelsY)*(GetSizeZ()/m_nVoxelsZ); }
           G4double GetVoxelVolume() const;
           G4ThreeVector GetVoxelCentre(int idX, int idY, int idZ) const;
           G4ThreeVector GetVoxelCentre(int linearizedId) const; 
@@ -156,6 +155,9 @@ class VPatientSD : public G4VSensitiveDetector, public Logable {
 
     ///
     void AddScoringVolume(const G4String& runCollName, const G4String& hitsCollName, const G4Box& scoringBox, int scoringNX, int scoringNY, int scoringNZ, const G4ThreeVector& translation=G4ThreeVector());
+
+    ///
+    void AddScoringVolume(const G4String& runCollName, const G4String& hitsCollName, const G4Solid& scoringSolid, const G4ThreeVector& translation);
 
     ///
     G4int GetScoringVolumeIdx(const G4String& hitsCollName) const;

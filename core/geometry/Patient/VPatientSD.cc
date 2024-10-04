@@ -53,6 +53,16 @@ void VPatientSD::AddScoringVolume(const G4String& runCollName, const G4String& h
   }
 };
 
+void VPatientSD::AddScoringVolume(const G4String& runCollName, const G4String& hitsCollName, const G4Solid& scoringSolid, const G4ThreeVector& translation){
+  AddHitsCollection(runCollName,hitsCollName);
+  SetScoringParameterization(hitsCollName,scoringNX,scoringNY,scoringNZ);
+  SetScoringVolume(hitsCollName,scoringSolid,translation);
+  if (Service<ConfigSvc>()->GetValue<bool>("RunSvc", "NTupleAnalysis")){
+    auto isVoxelised = false;
+    NTupleEventAnalisys::DefineTTree(runCollName,isVoxelised,hitsCollName,"Event data");
+    NTupleEventAnalisys::SetTracksAnalysis(hitsCollName,m_tracks_analysis);
+  }
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 /// 
@@ -338,15 +348,6 @@ void VPatientSD::SetScoringVolume(G4int scoringSdIdx, const G4Box& envelopBox, c
   LOGSVC_DEBUG("VPatientSD:: Voxelized SD range y {} - {}", sdHColPtr->m_rangeMinY, sdHColPtr->m_rangeMaxY);
   LOGSVC_DEBUG("VPatientSD:: Voxelized SD range z {} - {}",sdHColPtr->m_rangeMinZ,sdHColPtr->m_rangeMaxZ);
 
-
-  //G4cout << "[DEBUG]:: VPatientSD:: Defined Collection: " << hcName << G4endl;
-  // G4cout << "[DEBUG]:: Voxelized SD range: X " << xMin << " - " << xMax << G4endl;
-  // G4cout << "[DEBUG]:: Voxelized SD range: Y " << yMin << " - " << yMax << G4endl;
-  // std::cout << "[DEBUG]:: Voxelized SD range: Z " << std::setprecision(16) << zMin*10000000000 <<  " - " << zMax*10000000000 << std::endl;
-  // G4cout <<   << " - " << zMax*1000000  << G4endl;
-  // G4cout << G4endl;
-
-  // Fill the information about voxels positioning
   auto nvX = sdHColPtr->m_nVoxelsX;
   auto nvY = sdHColPtr->m_nVoxelsY;
   auto nvZ = sdHColPtr->m_nVoxelsZ;

@@ -37,8 +37,8 @@ void Element::Construct(G4VPhysicalVolume *parentPV) {
 
     std::cout << "Element: " << name << " path: " << path << std::endl;
 
-    auto mesh = CADMesh::TessellatedMesh::FromOBJ(path);
-    G4VSolid* solid = mesh->GetSolid(m_elementID);
+    auto mesh = CADMesh::TessellatedMesh::FromSTL(path);
+    G4VSolid* solid = mesh->GetSolid();
     
     auto Medium = ConfigSvc::GetInstance()->GetValue<G4MaterialSPtr>("MaterialsSvc", m_element_material);
     auto elementLV = new G4LogicalVolume(solid, Medium.get(), nameLV);
@@ -73,8 +73,8 @@ void Element::DefineSensitiveDetector(){
 
     std::string name = GetName();
     std::string runCollName = name.substr(0, name.find('_', 0));
-    // patientSD->AddScoringVolume(runCollName,hcName,*envBox,m_elementID,m_elementID,m_elementID);
-    // VPatient::SetSensitiveDetector(label+"LV", patientSD); 
+    patientSD->AddScoringVolume(runCollName,hcName,*envBox, centre + pv->GetTranslation());
+    VPatient::SetSensitiveDetector(label+"LV", patientSD); 
 
   }
 }
